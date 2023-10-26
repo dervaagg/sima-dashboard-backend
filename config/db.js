@@ -12,6 +12,14 @@ export const testDbConnection = async () => {
   }
 };
 
-const db = new Sequelize(process.env.POSTGRESQL_DB_URI); // Example for postgres
+const db = new Sequelize(process.env.POSTGRESQL_DB_URI, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+}); // Example for postgres
 
 export default db;
