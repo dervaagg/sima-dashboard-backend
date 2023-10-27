@@ -1,45 +1,76 @@
-import User from "../models/userModel.js";
-import argon2 from "argon2";
+import Users from '../models/UserModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-export const Login = async (req, res) => {
-    const user = await User.findOne({
-        where: {
-            email: req.body.email
-        }
-    });
-    if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
-    const match = await argon2.verify(user.password, req.body.password);
-    if (!match) return res.status(400).json({ message: "Password salah!" });
-    req.session.userId = user.uuid;
-    const uuid = user.uuid;
-    const name = user.name;
-    const email = user.email;
-    const role = user.role;
-    res.status(200).json({
-        uuid,
-        name,
-        email,
-        role
-    });
-}
+export const login = async (req, res) => {
+  const user = await Users.findOne({
+    where: {
+      email: req.body.email,
+    },
+  });
 
-export const Me = async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ message: "Anda belum login" });
+  if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+
+  const match = await bcrypt.compare(req.body.password, user.password);
+
+  if (!match) return res.status(400).json({ message: 'Password salah!' });
+
+  const userId = user.id;
+  const name = user.name;
+  const email = user.email;
+
+  const accessToken = jwt.sign(
+    { userId, name, email },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: '10m',
     }
-    const user = await User.findOne({
-        attributes: ['uuid', 'name', 'email', 'role'],
-        where: {
-            uuid: req.session.userId
-        }
-    });
-    if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
-    res.status(200).json(user);
-}
+  );
 
-export const logOut = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) return res.status(400).json({ message: "Logout gagal" });
-        res.status(200).json({ message: "Logout berhasil" });
-    });
-}
+  res.status(200).json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    accessToken,
+  });
+};
+
+export const me = async (req, res) => {
+  const user = await Users.findOne({
+    attributes: ['id', 'name', 'email', 'role'],
+    where: {
+      id: req.user.userId,
+    },
+  });
+
+  if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+
+  res.status(200).json({ user, status: 'success' });
+};
+
+export const logout = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) return res.sendStatus(204);
+
+  const user = await Users.findOne({
+    where: {
+      refresh_token: refreshToken,
+    },
+  });
+  if (!user) return res.sendStatus(204);
+
+  const userId = user.id;
+
+  await Users.update(
+    { refresh_token: null },
+    {
+      where: {
+        id: userId,
+      },
+    }
+  );
+  res.clearCookie('refreshToken');
+  return res.sendStatus(200);
+};

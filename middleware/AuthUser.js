@@ -1,27 +1,42 @@
-import User from "../models/userModel.js";
+import Users from '../models/UserModel.js';
+import jwt from 'jsonwebtoken';
 
-export const verifyUser = async (req, res, next) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ message: "Anda belum login" });
-    }
-    const user = await User.findOne({
-        where: {
-            uuid: req.session.userId
-        }
+export function isAuthenticated(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      req.user = user;
+      next();
     });
-    if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
-    req.userId = user.id;
-    req.role = user.role;
-    next();
+  } else {
+    res
+      .sendStatus(401)
+      .json({ message: 'Token tidak valid. Silahkan login kembali' });
+  }
 }
 
-export const operatorOnly = async (req, res, next) => {
-    const user = await User.findOne({
-        where: {
-            uuid: req.session.userId
-        }
+export const isOperator = async (req, res, next) => {
+  try {
+    const user = await Users.findOne({
+      where: {
+        id: req.session.userId,
+      },
     });
-    if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
-    if (user.role !== "operator") return res.status(403).json({ message: "Anda tidak memiliki akses" });
-    next();
-}
+
+    if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+
+    if (user.role !== 'operator')
+      return res.status(403).json({ message: 'Anda tidak memiliki akses' });
+  } catch (error) {
+    return res.status(500).send({
+      message: 'Unable to validate User role!',
+    });
+  }
+};
