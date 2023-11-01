@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  operator
+  lecturer
+  student
+  department
+}
+
+model User {
+  email       String       @id @map(name: "email")
+  password    String
+  role        Role
+  students    Student[]
+  lecturers   Lecturer[]
+  departments Department[]
+  admins      Admin[]
+}
+
+model Student {
+  id           String   @id @default(cuid()) @map(name: "id")
+  name         String
+  id_number    String   @unique
+  year         String
+  address      String
+  city         String
+  province     String
+  phone_number String
+  status       Status
+  id_lecturer  String
+  email        String
+  User         User     @relation(fields: [email], references: [email])
+  Lecturer     Lecturer @relation(fields: [id_lecturer], references: [id_number])
+}
+
+enum Status {
+  active
+  leave
+  dropout
+  absent
+}
+
+model Lecturer {
+  id           String    @id @default(cuid()) @map(name: "id")
+  name         String
+  id_number    String    @unique
+  phone_number String
+  email        String
+  User         User      @relation(fields: [email], references: [email])
+  Student      Student[]
+}
+
+model Department {
+  id           String @id @default(cuid()) @map(name: "id")
+  name         String
+  id_number    String @unique
+  phone_number String
+  email        String
+  User         User   @relation(fields: [email], references: [email])
+}
+
+model Admin {
+  id           String @id @default(cuid()) @map(name: "id")
+  name         String
+  id_number    String @unique
+  phone_number String
+  email        String
+  User         User   @relation(fields: [email], references: [email])
+}
