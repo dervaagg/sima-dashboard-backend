@@ -5,26 +5,11 @@ const { DataTypes } = Sequelize;
 const Users = db.define(
   'users',
   {
-    id: {
-      type: DataTypes.STRING,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [3, 100],
-      },
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
+      unique: true,
       validate: {
         notEmpty: true,
         isEmail: true,
@@ -38,7 +23,7 @@ const Users = db.define(
       },
     },
     role: {
-      type: ENUM('lecturer', 'operator', 'student', 'department'),
+      type: ENUM('lecturer', 'admin', 'student', 'department'),
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -50,8 +35,8 @@ const Users = db.define(
   }
 );
 
-Users.sync().then(() => {
-  console.log('🔄 User Model synced');
-});
+// Users.sync().then(() => {
+//   console.log('🔄 User Model synced');
+// });
 
 export default Users;
