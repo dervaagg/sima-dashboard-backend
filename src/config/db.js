@@ -20,6 +20,6 @@ const db = new Sequelize(process.env.POSTGRESQL_DB_URI, {
       rejectUnauthorized: false,
     },
   },
-}); // Example for postgres
+});
 
 export default db;

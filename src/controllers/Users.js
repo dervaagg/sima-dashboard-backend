@@ -1,10 +1,14 @@
-import User from '../models/UserModel.js';
+import Users from '../models/userModel.js';
+import Students from '../models/StudentModel.js';
+import Lecturers from '../models/LecturerModel.js';
+import Departments from '../models/DepartmentModel.js';
+import Admins from '../models/AdminModel.js';
 import bcrypt from 'bcrypt';
 
 export const getUsers = async (req, res) => {
   try {
     const response = await User.findAll({
-      attributes: ['id', 'name', 'email', 'role'],
+      attributes: ['name', 'id_number', 'email', 'role'],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -15,9 +19,9 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const response = await User.findOne({
-      attributes: ['id', 'name', 'email', 'role'],
+      attributes: ['name', 'email', 'role'],
       where: {
-        id: req.params.id,
+        email: req.params.email,
       },
     });
     res.status(200).json(response);
@@ -27,7 +31,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { name, email, password, confPassword, role } = req.body;
+  const { name, email, password, confPassword } = req.body;
   if (password !== confPassword)
     return res
       .status(400)
