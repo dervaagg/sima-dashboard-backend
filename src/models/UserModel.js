@@ -5,6 +5,15 @@ const { DataTypes } = Sequelize;
 const Users = db.define(
   'users',
   {
+    id: {
+      type: DataTypes.STRING,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+      validate: {
+        notEmpty: true,
+      },
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

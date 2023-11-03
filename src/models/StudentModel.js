@@ -41,28 +41,28 @@ const Students = db.define(
         },
         address: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },
         },
         city: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },
         },
         province: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },
         },
         phone_number: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },

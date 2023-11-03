@@ -1,4 +1,5 @@
 import Users from '../models/userModel.js';
+import Admins from '../models/AdminModel.js';
 import jwt from 'jsonwebtoken';
 
 export function isAuthenticated(req, res, next) {
@@ -22,18 +23,20 @@ export function isAuthenticated(req, res, next) {
   }
 }
 
-export const isOperator = async (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
   try {
     const user = await Users.findOne({
       where: {
-        id: req.session.userId,
+        email: req.user.email,
       },
     });
 
     if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
 
-    if (user.role !== 'operator')
+    if (user.role !== 'admin')
       return res.status(403).json({ message: 'Anda tidak memiliki akses' });
+
+    next();
   } catch (error) {
     return res.status(500).send({
       message: 'Unable to validate User role!',

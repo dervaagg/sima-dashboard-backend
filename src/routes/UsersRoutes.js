@@ -3,17 +3,17 @@ import {
   getUsers,
   getUserById,
   createUser,
-  updateUser,
+  // updateUser,
   deleteUser,
 } from '../controllers/Users.js';
-import { isOperator, isAuthenticated } from '../middleware/AuthUser.js';
+import { isAuthenticated } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/users', isAuthenticated, isOperator, getUsers);
-router.get('/users/:id', isAuthenticated, isOperator, getUserById);
-router.post('/users', isAuthenticated, isOperator, createUser);
-router.patch('/users/:id', isAuthenticated, isOperator, updateUser);
-router.delete('/users/:id', isAuthenticated, isOperator, deleteUser);
+router.get('/users', getUsers);
+router.get('/users/:id', getUserById);
+router.post('/users', createUser);
+// router.patch('/users/:id',    updateUser);
+router.delete('/users/:id', deleteUser);
 
 export default router;
