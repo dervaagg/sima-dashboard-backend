@@ -49,33 +49,33 @@ export const createUser = async (req, res) => {
   }
 };
 
-// export const updateUser = async (req, res) => {
-//   const user = await Users.findOne({
-//     where: {
-//       id: req.params.id,
-//     },
-//   });
-//   if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
-//   const { name, email, role } = req.body;
+export const updateUser = async (req, res) => {
+  const user = await Users.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+  const { name, email, role } = req.body;
 
-//   try {
-//     await Users.update(
-//       {
-//         name: name,
-//         email: email,
-//         role: role,
-//       },
-//       {
-//         where: {
-//           id: user.id,
-//         },
-//       }
-//     );
-//     res.status(201).json({ message: 'User berhasil terupdate' });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
+  try {
+    await Users.update(
+      {
+        name: name,
+        email: email,
+        role: role,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    );
+    res.status(201).json({ message: 'User berhasil terupdate' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 export const deleteUser = async (req, res) => {
   const user = await Users.findOne({

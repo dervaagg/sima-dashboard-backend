@@ -32,6 +32,10 @@ const Lecturers = db.define(
                 len: [3, 20],
             },
 
+            references: {
+                model: Students,
+                key: 'id_lecturer',
+            },
         },
         phone_number: {
             type: DataTypes.STRING,
@@ -62,7 +66,7 @@ const Lecturers = db.define(
 );
 
 Users.hasMany(Lecturers);
-Lecturers.belongsTo(Users);
+Lecturers.belongsTo(Users, { foreignKey: 'email' });
 
 // Students.hasOne(Lecturers);
 // Lecturers.belongsTo(Students, { foreignKey: 'id_number' });

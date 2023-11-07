@@ -3,17 +3,17 @@ import {
     getAdmins,
     getAdminById,
     createAdmin,
-    // updateAdmin,
+    updateAdmin,
     deleteAdmin,
 } from '../controllers/Admins.js';
-import { } from '../middleware/AuthUser.js';
+import { isAuthenticated } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/admins', getAdmins);
-router.get('/admins/:id', getAdminById);
-router.post('/admins', createAdmin);
-// router.patch('/admins/:id',    updateAdmin);
-router.delete('/admins/:id', deleteAdmin);
+router.get('/admins', isAuthenticated, getAdmins);
+router.get('/admin/:id', isAuthenticated, getAdminById);
+router.post('/admin', isAuthenticated, createAdmin);
+router.patch('/admin/:id', isAuthenticated, updateAdmin);
+router.delete('/admin/:id', isAuthenticated, deleteAdmin);
 
 export default router;

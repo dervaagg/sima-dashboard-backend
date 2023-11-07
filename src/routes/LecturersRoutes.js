@@ -6,14 +6,14 @@ import {
     updateLecturer,
     deleteLecturer,
 } from '../controllers/Lecturers.js';
-import { } from '../middleware/AuthUser.js';
+import { isAuthenticated } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/lecturers', getLecturers);
-router.get('/lecturers/:id', getLecturerById);
-router.post('/lecturers', createLecturer);
-router.patch('/lecturers/:id', updateLecturer);
-router.delete('/lecturers/:id', deleteLecturer);
+router.get('/lecturers', isAuthenticated, getLecturers);
+router.get('/lecturer/:id', isAuthenticated, getLecturerById);
+router.post('/lecturer', isAuthenticated, createLecturer);
+router.patch('/lecturer/:id', isAuthenticated, updateLecturer);
+router.delete('/lecturer/:id', isAuthenticated, deleteLecturer);
 
 export default router;

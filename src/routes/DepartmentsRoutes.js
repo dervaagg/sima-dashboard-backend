@@ -6,14 +6,14 @@ import {
     updateDepartment,
     deleteDepartment,
 } from '../controllers/Departments.js';
-import { } from '../middleware/AuthUser.js';
+import { isAuthenticated } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/departments', getDepartments);
-router.get('/departments/:id', getDepartmentById);
-router.post('/departments', createDepartment);
-router.patch('/departments/:id', updateDepartment);
-router.delete('/departments/:id', deleteDepartment);
+router.get('/departments', isAuthenticated, getDepartments);
+router.get('/department/:id', isAuthenticated, getDepartmentById);
+router.post('/department', isAuthenticated, createDepartment);
+router.patch('/department/:id', isAuthenticated, updateDepartment);
+router.delete('/department/:id', isAuthenticated, deleteDepartment);
 
 export default router;

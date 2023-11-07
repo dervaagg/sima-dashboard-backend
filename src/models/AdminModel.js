@@ -60,7 +60,7 @@ const Admins = db.define(
 );
 
 Users.hasMany(Admins);
-Admins.belongsTo(Users);
+Admins.belongsTo(Users, { foreignKey: 'email' });
 
 // Admins.sync().then(() => {
 //     console.log('🔄 User Model synced');

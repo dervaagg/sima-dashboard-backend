@@ -60,7 +60,7 @@ const Departments = db.define(
 );
 
 Users.hasMany(Departments);
-Departments.belongsTo(Users);
+Departments.belongsTo(Users, { foreignKey: 'email' });
 
 // Departments.sync().then(() => {
 //     console.log('🔄 Department Model synced');

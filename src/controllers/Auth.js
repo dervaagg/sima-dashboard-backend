@@ -4,10 +4,13 @@ import jwt from 'jsonwebtoken';
 
 export const login = async (req, res) => {
   const user = await Users.findOne({
+    attributes: ['id', 'name', 'email', 'password', 'role'],
     where: {
       email: req.body.email,
     },
   });
+
+  console.log(user, 'ini user');
 
   if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
 
@@ -22,9 +25,7 @@ export const login = async (req, res) => {
   const accessToken = jwt.sign(
     { userId, name, email },
     process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: '',
-    }
+
   );
 
   res.status(200).json({

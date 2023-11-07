@@ -14,6 +14,13 @@ const Users = db.define(
         notEmpty: true,
       },
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -44,7 +51,10 @@ const Users = db.define(
   }
 );
 
-// Users.sync().then(() => {
+// Users.sync({
+//   force: true,
+//   alter: true,
+// }).then(() => {
 //   console.log('🔄 User Model synced');
 // });
 

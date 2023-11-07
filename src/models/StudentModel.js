@@ -34,7 +34,7 @@ const Students = db.define(
         },
         year: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: true,
             },
@@ -70,6 +70,7 @@ const Students = db.define(
         status: {
             type: ENUM('active', 'leave', 'dropout', 'absent'),
             allowNull: false,
+            defaultValue: 'active',
             validate: {
                 notEmpty: true,
             },
@@ -107,7 +108,7 @@ const Students = db.define(
 );
 
 Users.hasMany(Students);
-Students.belongsTo(Users);
+Students.belongsTo(Users, { foreignKey: 'email' });
 
 // Students.hasOne(Lecturers);
 // Lecturers.belongsTo(Students, { foreignKey: 'id_number' });

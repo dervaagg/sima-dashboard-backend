@@ -6,14 +6,14 @@ import {
     updateStudent,
     deleteStudent,
 } from '../controllers/Students.js';
-import { } from '../middleware/AuthUser.js';
+import { isAuthenticated } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/students', getStudents);
-router.get('/students/:id', getStudentById);
-router.post('/students', createStudent);
-router.patch('/students/:id', updateStudent);
-router.delete('/students/:id', deleteStudent);
+router.get('/students', isAuthenticated, getStudents);
+router.get('/student/:id', isAuthenticated, getStudentById);
+router.post('/student', isAuthenticated, createStudent);
+router.patch('/student/:id', isAuthenticated, updateStudent);
+router.delete('/student/:id', isAuthenticated, deleteStudent);
 
 export default router;
