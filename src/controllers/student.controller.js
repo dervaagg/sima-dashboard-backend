@@ -1,6 +1,6 @@
 import { UUID, UUIDV4 } from 'sequelize';
-import Students from '../models/StudentModel.js';
-import Users from '../models/userModel.js';
+import Students from '../models/student.model.js';
+import Users from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 
 export const getStudents = async (req, res) => {
@@ -54,7 +54,7 @@ export const createStudent = async (req, res) => {
             city: city,
             province: province,
             phone_number: phone_number,
-            status: status, 
+            status: status,
             id_lecturer: id_lecturer,
             email: email,
         });

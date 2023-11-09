@@ -1,10 +1,10 @@
 import express from 'express';
-import AuthRouter from './AuthRoutes.js';
-import UsersRouter from './UsersRoutes.js';
-import adminsRoutes from './AdminsRoutes.js';
-import departmentsRoutes from './DepartmentsRoutes.js';
-import lecturersRoutes from './LecturersRoutes.js';
-import studentsRoutes from './StudentsRoutes.js';
+import AuthRouter from './auth.routes.js';
+import UsersRouter from './user.routes.js';
+import adminsRoutes from './admin.routes.js';
+import departmentsRoutes from './department.routes.js';
+import lecturersRoutes from './lecturer.routes.js';
+import studentsRoutes from './student.routes.js';
 
 const router = express.Router();
 

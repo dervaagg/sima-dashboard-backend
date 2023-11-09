@@ -1,6 +1,6 @@
 import { UUID, UUIDV4 } from 'sequelize';
-import Departments from '../models/DepartmentModel.js';
-import Users from '../models/userModel.js';
+import Departments from '../models/department.model.js';
+import Users from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 
 export const getDepartments = async (req, res) => {

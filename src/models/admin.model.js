@@ -1,6 +1,6 @@
 import { ENUM, Sequelize } from 'sequelize';
 import db from '../config/db.js';
-import Users from './userModel.js';
+import Users from './user.model.js';
 
 const { DataTypes } = Sequelize;
 const Admins = db.define(
@@ -62,7 +62,10 @@ const Admins = db.define(
 Users.hasMany(Admins);
 Admins.belongsTo(Users, { foreignKey: 'email' });
 
-// Admins.sync().then(() => {
+// Admins.sync({
+// force: true,
+//     alter: true,
+// }).then(() => {
 //     console.log('🔄 User Model synced');
 // });
 

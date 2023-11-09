@@ -5,8 +5,8 @@ import {
   createUser,
   updateUser,
   deleteUser,
-} from '../controllers/Users.js';
-import { isAuthenticated } from '../middleware/AuthUser.js';
+} from '../controllers/user.controller.js';
+import { isAuthenticated } from '../middleware/authUser.js/index.js';
 
 const router = express.Router();
 

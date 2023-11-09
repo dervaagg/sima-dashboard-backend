@@ -1,11 +1,11 @@
 import { ENUM, Sequelize } from 'sequelize';
 import db from '../config/db.js';
-import Users from './userModel.js';
-import Lecturers from './LecturerModel.js';
+import Students from './student.model.js';
+import Users from './user.model.js';
 
 const { DataTypes } = Sequelize;
-const Students = db.define(
-    'students',
+const Lecturers = db.define(
+    'lecturers',
     {
         id: {
             type: DataTypes.STRING,
@@ -31,60 +31,18 @@ const Students = db.define(
                 notEmpty: true,
                 len: [3, 20],
             },
-        },
-        year: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        city: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        province: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                notEmpty: true,
+
+            references: {
+                model: Students,
+                key: 'id_lecturer',
             },
         },
         phone_number: {
             type: DataTypes.STRING,
-            allowNull: true,
-            validate: {
-                notEmpty: true,
-            },
-        },
-        status: {
-            type: ENUM('active', 'leave', 'dropout', 'absent'),
-            allowNull: false,
-            defaultValue: 'active',
-            validate: {
-                notEmpty: true,
-            },
-        },
-        id_lecturer: {
-            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true,
             },
-            // references: {
-            //     model: Lecturers,
-            //     key: 'id_number',
-            // },
         },
         email: {
             type: DataTypes.STRING,
@@ -107,14 +65,17 @@ const Students = db.define(
     }
 );
 
-Users.hasMany(Students);
-Students.belongsTo(Users, { foreignKey: 'email' });
+Users.hasMany(Lecturers);
+Lecturers.belongsTo(Users, { foreignKey: 'email' });
 
 // Students.hasOne(Lecturers);
 // Lecturers.belongsTo(Students, { foreignKey: 'id_number' });
 
-// Students.sync().then(() => {
-//     console.log('🔄 Student Model synced');
+// Lecturers.sync({
+// force: true,
+//     alter: true,
+// }).then(() => {
+//     console.log('🔄 Lecturer Model synced');
 // });
 
-export default Students;
+export default Lecturers;

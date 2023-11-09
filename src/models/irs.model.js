@@ -1,11 +1,11 @@
 // import { ENUM, Sequelize } from 'sequelize';
-import Users from './userModel.js';
+import Users from './user.model.js';
 import db from '../config/db.js';
-import Students from './StudentModel.js';
+import Students from './student.model.js';
 
 const { DataTypes } = Sequelize;
-const IRS = db.define(
-    'irs',
+const Irss = db.define(
+    'irss',
     {
         semester: {
             type: DataTypes.NUMBER,
@@ -57,7 +57,10 @@ const IRS = db.define(
 Students.hasMany(IRS);
 Departments.belongsTo(Users, { foreignKey: 'email' });
 
-// IRS.sync().then(() => {
+// Irss.sync({
+// force: true,
+//     alter: true,
+// }).then(() => {
 //   console.log('🔄 ISR Model synced');
 // });
 

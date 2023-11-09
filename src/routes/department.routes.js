@@ -5,8 +5,8 @@ import {
     createDepartment,
     updateDepartment,
     deleteDepartment,
-} from '../controllers/Departments.js';
-import { isAuthenticated } from '../middleware/AuthUser.js';
+} from '../controllers/department.controller.js';
+import { isAuthenticated } from '../middleware/authUser.js/index.js';
 
 const router = express.Router();
 

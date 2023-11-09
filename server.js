@@ -21,6 +21,10 @@ app.use(
   })
 );
 
+// (async () => {
+// await db.sync();
+// })();
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());

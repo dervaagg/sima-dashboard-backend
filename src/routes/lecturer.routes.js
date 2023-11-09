@@ -5,8 +5,8 @@ import {
     createLecturer,
     updateLecturer,
     deleteLecturer,
-} from '../controllers/Lecturers.js';
-import { isAuthenticated } from '../middleware/AuthUser.js';
+} from '../controllers/lecturer.controller.js';
+import { isAuthenticated } from '../middleware/authUser.js/index.js';
 
 const router = express.Router();
 

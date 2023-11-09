@@ -1,34 +1,34 @@
 import { UUID, UUIDV4 } from 'sequelize';
-import Admins from '../models/AdminModel.js';
-import Users from '../models/userModel.js';
+import Lecturers from '../models/lecturer.model.js';
+import Users from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 
-export const getAdmins = async (req, res) => {
+export const getLecturers = async (req, res) => {
     try {
-        const response = await Admins.findAll({
+        const response = await Lecturers.findAll({
             attributes: ['id', 'name', 'id_number', 'phone_number', 'email'],
         });
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ message: 'Admin tidak tersedia' });
+        res.status(500).json({ message: 'Lecturer tidak tersedia' });
     }
 };
 
-export const getAdminById = async (req, res) => {
+export const getLecturerById = async (req, res) => {
     try {
-        const response = await Admins.findOne({
-            attributes: ['id', 'name', 'id_number', 'phone_number', 'email'],
+        const response = await Lecturers.findOne({
+            attributes: ['name', 'id_number', 'phone_number', 'email'],
             where: {
                 id: req.params.id,
             },
         });
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ message: 'admin tidak ditemukan' });
+        res.status(500).json({ message: 'Lecturer tidak ditemukan' });
     }
 };
 
-export const createAdmin = async (req, res) => {
+export const createLecturer = async (req, res) => {
     const { name, id_number, phone_number, email, password, confPassword, role, } = req.body;
     if (password !== confPassword)
         return res
@@ -45,30 +45,30 @@ export const createAdmin = async (req, res) => {
             confPassword: hashPassword,
             role: role,
         })
-        await Admins.create({
-            id: Admins.UUIDV4,
+        await Lecturers.create({
+            id: Lecturers.UUIDV4,
             name: name,
             id_number: id_number,
             phone_number: phone_number,
             email: email,
         });
-        res.status(201).json({ message: 'User berhasil dibuat' });
+        res.status(201).json({ message: 'Lecturer berhasil dibuat' });
     } catch (error) {
-        res.status(400).json({ message: 'User gagal dibuat' });
+        res.status(400).json({ message: 'Lecturer gagal dibuat' });
     }
 };
 
-export const updateAdmin = async (req, res) => {
-    const admin = await Admins.findOne({
+export const updateLecturer = async (req, res) => {
+    const lecturer = await Lecturers.findOne({
         where: {
             id: req.params.id,
         },
     });
-    if (!admin) return res.status(404).json({ message: 'Admin tidak ditemukan' });
+    if (!lecturer) return res.status(404).json({ message: 'Lecturer tidak ditemukan' });
     const { name, id_number, phone_number, email } = req.body;
 
     try {
-        await Admins.update(
+        await Lecturers.update(
             {
                 name: name,
                 id_number: id_number,
@@ -77,31 +77,31 @@ export const updateAdmin = async (req, res) => {
             },
             {
                 where: {
-                    id: admin.id,
+                    id: Lecturers.id,
                 },
             }
         );
-        res.status(201).json({ message: 'Admin berhasil terupdate' });
+        res.status(201).json({ message: 'Lecturer berhasil terupdate' });
     } catch (error) {
-        res.status(400).json({ message: 'Admin gagal terupdate' });
+        res.status(400).json({ message: 'Lecturer gagal terupdate' });
     }
 };
 
-export const deleteAdmin = async (req, res) => {
-    const admin = await Admins.findOne({
+export const deleteLecturer = async (req, res) => {
+    const lecturer = await Lecturers.findOne({
         where: {
             id: req.params.id,
         },
     });
-    if (!admin) return res.status(404).json({ message: 'Admin tidak ditemukan' });
+    if (!lecturer) return res.status(404).json({ message: 'Lecturer tidak ditemukan' });
     try {
-        await admin.destroy({
+        await lecturer.destroy({
             where: {
-                id: admin.id,
+                id: lecturer.id,
             },
         });
-        res.status(201).json({ message: 'Admin berhasil terhapus' });
+        res.status(201).json({ message: 'Lecturer berhasil terhapus' });
     } catch (error) {
-        res.status(400).json({ message: 'Admin gagal terhapus' });
+        res.status(400).json({ message: 'Lecturer gagal terhapus' });
     }
 };

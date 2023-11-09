@@ -1,11 +1,10 @@
 import { ENUM, Sequelize } from 'sequelize';
 import db from '../config/db.js';
-import Students from './StudentModel.js';
-import Users from './userModel.js';
+import Users from './user.model.js';
 
 const { DataTypes } = Sequelize;
-const Lecturers = db.define(
-    'lecturers',
+const Departments = db.define(
+    'departments',
     {
         id: {
             type: DataTypes.STRING,
@@ -30,11 +29,6 @@ const Lecturers = db.define(
             validate: {
                 notEmpty: true,
                 len: [3, 20],
-            },
-
-            references: {
-                model: Students,
-                key: 'id_lecturer',
             },
         },
         phone_number: {
@@ -65,14 +59,14 @@ const Lecturers = db.define(
     }
 );
 
-Users.hasMany(Lecturers);
-Lecturers.belongsTo(Users, { foreignKey: 'email' });
+Users.hasMany(Departments);
+Departments.belongsTo(Users, { foreignKey: 'email' });
 
-// Students.hasOne(Lecturers);
-// Lecturers.belongsTo(Students, { foreignKey: 'id_number' });
-
-// Lecturers.sync().then(() => {
-//     console.log('🔄 Lecturer Model synced');
+// Departments.sync({
+// force: true,
+//     alter: true,
+// }).then(() => {
+//     console.log('🔄 Department Model synced');
 // });
 
-export default Lecturers;
+export default Departments;

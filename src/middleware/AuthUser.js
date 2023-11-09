@@ -1,5 +1,5 @@
-import Users from '../models/userModel.js';
-import Admins from '../models/AdminModel.js';
+import Users from '../models/user.model.js';
+import Admins from '../models/admin.model.js';
 import jwt from 'jsonwebtoken';
 
 export function isAuthenticated(req, res, next) {

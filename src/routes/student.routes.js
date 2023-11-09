@@ -5,8 +5,8 @@ import {
     createStudent,
     updateStudent,
     deleteStudent,
-} from '../controllers/Students.js';
-import { isAuthenticated } from '../middleware/AuthUser.js';
+} from '../controllers/student.controller.js';
+import { isAuthenticated } from '../middleware/authUser.js/index.js';
 
 const router = express.Router();
 
