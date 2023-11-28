@@ -1,77 +1,157 @@
-import Users from '../models/user.model.js';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+const SECRET = process.env.SECRET;
+const db = require("../models");
+const User = db.user;
+const Mahasiswa = db.mahasiswa;
 
-export const login = async (req, res) => {
-  const user = await Users.findOne({
-    attributes: ['id', 'name', 'email', 'password', 'role'],
-    where: {
-      email: req.body.email,
-    },
-  });
+//session
 
-  console.log(user, 'ini user');
+var bcrypt = require("bcryptjs");
+var jose = require("jose");
+const Dosen = require("../models/dosen.model");
 
-  if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+exports.signin = (req, res) => {
+  var email = req.body.email;
+  var username = req.body.username;
+  var data;
 
-  const match = await bcrypt.compare(req.body.password, user.password);
+  if (email) {
+    data = { email: email };
+  } else if (username) {
+    data = { username: username };
+  } else {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+  User.findOne(data)
+    .populate("roles", "-__v")
+    .exec(async (err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
 
-  if (!match) return res.status(400).json({ message: 'Password salah!' });
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
 
-  const userId = user.id;
-  const name = user.name;
-  const email = user.email;
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
 
-  const accessToken = jwt.sign(
-    { userId, name, email },
-    process.env.ACCESS_TOKEN_SECRET,
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Invalid Password!",
+        });
+      }
 
-  );
+      // check if session is already set if yes then respond with 200
+      if (req.session.user) {
+        return res.status(200).send({
+          message: "User already logged in",
+        });
+      } else {
+        // set session
+        req.session.user = user.username;
+        req.session.save(function (err) {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+        });
+      }
 
-  res.status(200).json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    accessToken,
-  });
+      if (user.roles.name == "mahasiswa") {
+        // Get mahasiswa name from user.id
+        const mahasiswa = await Mahasiswa.findOne(
+          { user: user._id },
+          (err, mahasiswa) => {
+            if (err) {
+              res.status(500).send({ message: err });
+              return;
+            }
+            return mahasiswa;
+          }
+        );
+
+        var token = await new jose.SignJWT({
+          id: user.id,
+          role: user.roles.name,
+          name: mahasiswa.name,
+          email: mahasiswa.email,
+        })
+          .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+          .setIssuedAt()
+          .setExpirationTime("12h")
+          .sign(new TextEncoder().encode(SECRET));
+
+        res.status(200).send({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          roles: user.roles.name,
+          accessToken: token,
+        });
+      } else if (user.roles.name == "dosen") {
+        const dosen = await Dosen.findOne({ user: user._id }, (err, dosen) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+          return dosen;
+        });
+
+        var token = await new jose.SignJWT({
+          id: user.id,
+          role: user.roles.name,
+          name: dosen.name,
+        })
+          .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+          .setIssuedAt()
+          .setExpirationTime("12h")
+          .sign(new TextEncoder().encode(SECRET));
+
+        res.status(200).send({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          roles: user.roles.name,
+          accessToken: token,
+        });
+      } else {
+        var token = await new jose.SignJWT({
+          id: user.id,
+          role: user.roles.name,
+        })
+          .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+          .setIssuedAt()
+          .setExpirationTime("12h")
+          .sign(new TextEncoder().encode(SECRET));
+
+        res.status(200).send({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          roles: user.roles.name,
+          accessToken: token,
+        });
+      }
+    });
 };
 
-export const me = async (req, res) => {
-  const user = await Users.findOne({
-    attributes: ['id', 'name', 'email', 'role'],
-    where: {
-      id: req.user.userId,
-    },
+exports.signout = (req, res) => {
+  req.session.user = null;
+  req.session.save(function (err) {
+    if (err) next(err);
+
+    // regenerate the session, which is good practice to help
+    // guard against forms of session fixation
+    req.session.regenerate(function (err) {
+      if (err) next(err);
+      res.redirect("/");
+    });
   });
-
-  if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
-
-  res.status(200).json({ user, status: 'success' });
-};
-
-export const logout = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-
-  if (!refreshToken) return res.sendStatus(204);
-
-  const user = await Users.findOne({
-    where: {
-      refresh_token: refreshToken,
-    },
-  });
-  if (!user) return res.sendStatus(204);
-
-  const userId = user.id;
-
-  await Users.update(
-    { refresh_token: null },
-    {
-      where: {
-        id: userId,
-      },
-    }
-  );
-  res.clearCookie('refreshToken');
-  return res.sendStatus(200);
 };

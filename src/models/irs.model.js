@@ -1,67 +1,32 @@
-// import { ENUM, Sequelize } from 'sequelize';
-import Users from './user.model.js';
-import db from '../config/db.js';
-import Students from './student.model.js';
+const { DataTypes } = require("sequelize");
 
-const { DataTypes } = Sequelize;
-const Irss = db.define(
-    'irss',
-    {
-        semester: {
+module.exports = (sequelize, Sequelize) => {
+    const IRS = sequelize.define("IRS", {
+        semester_aktif: {
             type: DataTypes.NUMBER,
-            allowNull: false,
-            required: true,
-            maxlength: 2,
-            validate: {
-                notEmpty: true,
-            },
+            required: [true, "Semester aktif wajib diisi"],
+            maxlength: [2, "Semester aktif maksimal 2 karakter"],
         },
         sks: {
             type: DataTypes.NUMBER,
-            allowNull: false,
-            primaryKey: true,
-            unique: true,
-            validate: {
-                notEmpty: true,
-                isEmail: true,
-            },
+            required: [true, "SKS wajib diisi"],
+            maxlength: [2, "SKS maksimal 2 karakter"],
         },
         file: {
             type: DataTypes.STRING,
-            allowNull: false,
-            required: true,
-            validate: {
-                notEmpty: true,
-            },
+            required: [true, "Upload wajib diisi"],
         },
-        validate: {
-            type: ENUM('accept', 'reject'),
-            allowNull: false,
-            defaultValue: 'reject',
-            validate: {
-                notEmpty: true,
-            },
+        status_konfirmasi: {
+            type: DataTypes.STRING,
+            enum: ["belum", "sudah"],
+            default: "belum",
         },
-        student: {
+        mahasiswa: {
             references: {
-                model: 'students',
-                key: 'id',
+                model: "Mahasiswa",
             },
         },
-    },
-    {
-        freezeTableName: true,
-    }
-);
+    });
 
-Students.hasMany(IRS);
-Departments.belongsTo(Users, { foreignKey: 'email' });
-
-// Irss.sync({
-// force: true,
-//     alter: true,
-// }).then(() => {
-//   console.log('🔄 ISR Model synced');
-// });
-
-export default IRS;
+    return IRS;
+};

@@ -1,4 +1,4 @@
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/provinsi.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -9,7 +9,5 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/signin", controller.signin);
-    app.post("/signout", controller.signout);
-    app.post("/me", controller.session);
+    app.get("/api/provinsi", controller.allProvinsi);
 };

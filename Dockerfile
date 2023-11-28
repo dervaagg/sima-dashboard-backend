@@ -12,4 +12,4 @@ RUN npm update
 RUN npm install
 RUN npm rebuild bcrypt --build-from-source
 EXPOSE 4000
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]

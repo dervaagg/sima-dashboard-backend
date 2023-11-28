@@ -1,61 +1,23 @@
-import { ENUM, Sequelize } from 'sequelize';
-import db from '../config/db.js';
+const { DataTypes } = require("sequelize");
 
-const { DataTypes } = Sequelize;
-const Users = db.define(
-  'users',
-  {
-    id: {
+module.exports = (sequelize, Sequelize) => {
+  const User = sequelize.define("User", {
+    username: {
       type: DataTypes.STRING,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      }
+      required: [true, "Username wajib diisi"],
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true,
-      unique: true,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      },
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
+    },
+    roles: {
+      references: {
+        model: "Role",
       },
     },
-    role: {
-      type: ENUM('lecturer', 'admin', 'student', 'department'),
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-  },
-  {
-    freezeTableName: true,
-  }
-);
+  });
 
-// Users.sync({
-//   force: true,
-//   alter: true,
-// }).then(() => {
-//   console.log('🔄 User Model synced');
-// });
-
-export default Users;
+  return User;
+};
