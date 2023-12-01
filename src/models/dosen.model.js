@@ -31,9 +31,9 @@ module.exports = (sequelize, Sequelize) => {
             maxlength: [12, "No telepon maksimal 12 karakter"],
         },
         user: {
-            references: {
-                model: "User",
-            },
+            // references: {
+            //     model: "User",
+            // },
         },
     });
 

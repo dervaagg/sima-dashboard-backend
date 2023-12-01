@@ -1,5 +1,4 @@
 const config = require('../config/db.config')
-
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(
@@ -46,5 +45,40 @@ db.STATUS = [
     "Lulus",
     "Meninggal Dunia",
 ];
+
+db.dosen.hasMany(db.user)
+
+// db.apply_loker.belongsTo(db.pencaker, {
+//     foreignKey: 'no_ktp',
+// })
+
+// db.loker.hasMany(db.apply_loker, {
+//     foreignKey: 'idloker',
+// })
+
+// db.apply_loker.belongsTo(db.loker, {
+//     foreignKey: 'idloker',
+// })
+
+// db.apply_loker.hasMany(db.tahapan_apply, {
+//     foreignKey: 'idapply',
+// })
+
+// db.tahapan_apply.belongsTo(db.apply_loker, {
+//     foreignKey: 'idapply',
+// })
+
+// db.tahapan_apply.belongsTo(db.tahapan, {
+//     foreignKey: 'idtahapan',
+// })
+
+// db.loker.belongsTo(db.master_status, {
+//     foreignKey: 'status',
+// })
+
+// db.master_status.hasMany(db.loker, {
+//     foreignKey: 'idstatus',
+// })
+
 
 module.exports = db;
