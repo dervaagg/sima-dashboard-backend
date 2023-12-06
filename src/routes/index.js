@@ -39,6 +39,7 @@ const {
     getListPKLController,
     getListKHSController,
     getListIRSController,
+    updateProfileMahasiswaController,
 } = require("../controllers/mahasiswaController");
 
 const {
@@ -131,6 +132,7 @@ router.post(
 // Dashboard
 router.get("/mahasiswa/dashboard", getDashboardMahasiswaController);
 router.get("/mahasiswa/profile", getProfileMahasiswaController);
+router.patch("/mahasiswa/update-profile", updateProfileMahasiswaController);
 
 // Entry data
 router.post("/mahasiswa/entry-irs", uploadDokumen, entryDataIrsController);

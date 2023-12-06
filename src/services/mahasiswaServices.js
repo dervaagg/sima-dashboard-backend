@@ -40,6 +40,7 @@ const getDataRegisterMahasiswa = async (data) => {
                 nim: true,
                 statusAktif: true,
                 jalurMasuk: true,
+                angkatan: true,
                 fk_kodeWali: {
                     select: {
                         nama: true,
@@ -57,6 +58,7 @@ const getDataRegisterMahasiswa = async (data) => {
         return {
             nama: result.nama,
             nim: result.nim,
+            angkatan: result.angkatan,
             statusAktif: result.statusAktif,
             jalurMasuk: result.jalurMasuk,
             namaWali: result.fk_kodeWali.nama,
