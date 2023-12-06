@@ -114,16 +114,17 @@ router.put("/operator/akun-dosen/status-aktif/:nip", updateStatusAkunDosenContro
 
 //=======================================================
 // Mahasiswa Controller
+router.get("/mahasiswa/get-irs", getListIRSController)
+router.get("/mahasiswa/get-khs", getListKHSController)
+router.get("/mahasiswa/get-pkl", getListPKLController)
+router.get("/mahasiswa/get-skripsi", getListSkripsiController)
+
 router.get("/mahasiswa/register", getDataRegisterMahasiswaController);
 router.post(
     "/mahasiswa/update-data",
     uploadFotoProfil,
     updateDataMahasiswaController
 );
-router.get("/mahasiswa/get-irs"), getListIRSController;
-router.get("/mahasiswa/get-khs"), getListKHSController;
-router.get("/mahasiswa/get-pkl"), getListPKLController;
-router.get("/mahasiswa/get-skripsi"), getListSkripsiController;
 
 // Dashboard
 router.get("/mahasiswa/dashboard", getDashboardMahasiswaController);

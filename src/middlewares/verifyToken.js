@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
                 return res.status(401).json({ message: "Token is not valid" });
             } else {
                 const { id, role } = decoded;
-                // console.log(decoded);
+                console.log(decoded);
                 req.id = id;
                 req.role = role;
 

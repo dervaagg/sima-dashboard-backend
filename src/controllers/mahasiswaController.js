@@ -15,6 +15,9 @@ const {
 
 const path = require("path");
 const fs = require("fs");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 const getDataRegisterMahasiswaController = async (req, res) => {
     const nim = req.id;
@@ -495,18 +498,20 @@ const entryDataSkripsiController = async (req, res) => {
 };
 
 const getListIRSController = async (req, res) => {
-    const {
-        nim
-    } = req.query
-
+    const nim = req.id
     if (!nim) {
         return res.status(400).json({ message: "NIM tidak boleh kosong" })
     }
 
     try {
-        const result = await getDataAkademikMhs({
-            nim
-        })
+        const result = await prisma.tb_irs.findMany({
+            where: {
+                nim: nim
+            },
+            orderBy: {
+                semester: "desc"
+            }
+        });
 
         return res.status(200).json({
             message: "data mahasiswa berhasil diambil",
@@ -520,18 +525,20 @@ const getListIRSController = async (req, res) => {
 };
 
 const getListKHSController = async (req, res) => {
-    const {
-        nim
-    } = req.query
-
+    const nim = req.id
     if (!nim) {
         return res.status(400).json({ message: "NIM tidak boleh kosong" })
     }
 
     try {
-        const result = await getDataAkademikMhs({
-            nim
-        })
+        const result = await prisma.tb_khs.findMany({
+            where: {
+                nim: nim
+            },
+            orderBy: {
+                semester: "desc"
+            }
+        });
 
         return res.status(200).json({
             message: "data mahasiswa berhasil diambil",
@@ -545,18 +552,20 @@ const getListKHSController = async (req, res) => {
 };
 
 const getListPKLController = async (req, res) => {
-    const {
-        nim
-    } = req.query
-
+    const nim = req.id
     if (!nim) {
         return res.status(400).json({ message: "NIM tidak boleh kosong" })
     }
 
     try {
-        const result = await getDataAkademikMhs({
-            nim
-        })
+        const result = await prisma.tb_pkl.findMany({
+            where: {
+                nim: nim
+            },
+            orderBy: {
+                semester: "desc"
+            }
+        });
 
         return res.status(200).json({
             message: "data mahasiswa berhasil diambil",
@@ -570,18 +579,20 @@ const getListPKLController = async (req, res) => {
 };
 
 const getListSkripsiController = async (req, res) => {
-    const {
-        nim
-    } = req.query
-
+    const nim = req.id
     if (!nim) {
         return res.status(400).json({ message: "NIM tidak boleh kosong" })
     }
 
     try {
-        const result = await getDataAkademikMhs({
-            nim
-        })
+        const result = await prisma.tb_skripsi.findMany({
+            where: {
+                nim: nim
+            },
+            orderBy: {
+                semester: "desc"
+            }
+        });
 
         return res.status(200).json({
             message: "data mahasiswa berhasil diambil",
