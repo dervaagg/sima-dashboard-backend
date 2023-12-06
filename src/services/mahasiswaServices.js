@@ -656,6 +656,7 @@ const getProfileMahasiswa = async (data) => {
 
         // spread profile mahasiswa
         const profile = {
+            angkatan: result.angkatan,
             namaDosenWali: result.fk_kodeWali.nama,
             nipDosenWali: result.fk_kodeWali.nip,
             semester: countSemester(result.angkatan),
