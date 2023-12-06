@@ -590,18 +590,27 @@ async function getAkunDosen(data) {
             take: data.qty,
             skip: (data.page - 1) * data.qty,
             where: {
-                OR: [
-                    {
-                        nama: {
-                            contains: data.keyword,
+                OR:
+                    data.keyword && [
+                        {
+                            nama: {
+                                contains: data.keyword,
+                                mode: 'insensitive'
+                            },
                         },
-                    },
-                    {
-                        nip: {
-                            contains: data.keyword,
+                        {
+                            nip: {
+                                contains: data.keyword,
+                                mode: 'insensitive'
+                            },
                         },
-                    },
-                ],
+                        {
+                            role: {
+                                contains: data.keyword,
+                                mode: 'insensitive'
+                            },
+                        },
+                    ],
             },
         });
 
