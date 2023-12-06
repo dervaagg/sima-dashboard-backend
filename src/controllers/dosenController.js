@@ -669,6 +669,8 @@ const updateStatusAktifMhsController = async (req, res) => {
     }
 };
 
+
+
 module.exports = {
     getDataRegisterDosenController,
     updateDataDosenController,

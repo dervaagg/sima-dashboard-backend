@@ -18,7 +18,7 @@ async function main() {
 
     const createDosen = await prisma.tb_dosen.createMany({
         data: dosen,
-        skipDuplicates: true,
+        skipDuplicates: false,
     });
 
     const createMhs = await prisma.tb_mhs.createMany({

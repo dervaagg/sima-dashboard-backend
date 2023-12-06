@@ -35,6 +35,10 @@ const {
     entryDataSkripsiController,
     getProfileMahasiswaController,
     getDashboardMahasiswaController,
+    getListSkripsiController,
+    getListPKLController,
+    getListKHSController,
+    getListIRSController,
 } = require("../controllers/mahasiswaController");
 
 const {
@@ -116,6 +120,10 @@ router.post(
     uploadFotoProfil,
     updateDataMahasiswaController
 );
+router.get("/mahasiswa/get-irs"), getListIRSController;
+router.get("/mahasiswa/get-khs"), getListKHSController;
+router.get("/mahasiswa/get-pkl"), getListPKLController;
+router.get("/mahasiswa/get-skripsi"), getListSkripsiController;
 
 // Dashboard
 router.get("/mahasiswa/dashboard", getDashboardMahasiswaController);

@@ -8,6 +8,11 @@ const {
     getProfileMahasiswa,
     getDashboardMahasiswa,
 } = require("../services/mahasiswaServices");
+
+const {
+    getDataAkademikMhs,
+} = require("../services/dataMahasiswaServices")
+
 const path = require("path");
 const fs = require("fs");
 
@@ -459,7 +464,6 @@ const entryDataSkripsiController = async (req, res) => {
     }
 
     // Check semester | Done in service
-
     // TODO-VALIDATE: Check nilai skripsi, lama studi, dan tanggalLulusSidang
 
     if (dokumen && path.extname(dokumen.originalname) !== ".pdf") {
@@ -490,12 +494,117 @@ const entryDataSkripsiController = async (req, res) => {
     }
 };
 
+const getListIRSController = async (req, res) => {
+    const {
+        nim
+    } = req.query
+
+    if (!nim) {
+        return res.status(400).json({ message: "NIM tidak boleh kosong" })
+    }
+
+    try {
+        const result = await getDataAkademikMhs({
+            nim
+        })
+
+        return res.status(200).json({
+            message: "data mahasiswa berhasil diambil",
+            data: result
+        })
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message
+        })
+    }
+};
+
+const getListKHSController = async (req, res) => {
+    const {
+        nim
+    } = req.query
+
+    if (!nim) {
+        return res.status(400).json({ message: "NIM tidak boleh kosong" })
+    }
+
+    try {
+        const result = await getDataAkademikMhs({
+            nim
+        })
+
+        return res.status(200).json({
+            message: "data mahasiswa berhasil diambil",
+            data: result
+        })
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message
+        })
+    }
+};
+
+const getListPKLController = async (req, res) => {
+    const {
+        nim
+    } = req.query
+
+    if (!nim) {
+        return res.status(400).json({ message: "NIM tidak boleh kosong" })
+    }
+
+    try {
+        const result = await getDataAkademikMhs({
+            nim
+        })
+
+        return res.status(200).json({
+            message: "data mahasiswa berhasil diambil",
+            data: result
+        })
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message
+        })
+    }
+};
+
+const getListSkripsiController = async (req, res) => {
+    const {
+        nim
+    } = req.query
+
+    if (!nim) {
+        return res.status(400).json({ message: "NIM tidak boleh kosong" })
+    }
+
+    try {
+        const result = await getDataAkademikMhs({
+            nim
+        })
+
+        return res.status(200).json({
+            message: "data mahasiswa berhasil diambil",
+            data: result
+        })
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message
+        })
+    }
+};
+
 module.exports = {
     getDataRegisterMahasiswaController,
     updateDataMahasiswaController,
 
     getDashboardMahasiswaController,
     getProfileMahasiswaController,
+
+    getListIRSController,
+    getListPKLController,
+    getListKHSController,
+    getListSkripsiController,
 
     entryDataIrsController,
     entryDataKhsController,
