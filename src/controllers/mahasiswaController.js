@@ -142,10 +142,10 @@ const updateProfileMahasiswaController = async (req, res) => {
     // check null input
     if (
         !nim ||
-        !email.trim() ||
-        !password.trim() ||
-        !alamat.trim() ||
-        !kodeKab.trim() ||
+        !email ||
+        !password ||
+        !alamat ||
+        !kodeKab ||
         !foto ||
         !noHP
     ) {
