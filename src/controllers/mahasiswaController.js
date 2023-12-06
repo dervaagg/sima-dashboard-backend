@@ -36,18 +36,17 @@ const getDataRegisterMahasiswaController = async (req, res) => {
 };
 
 const updateDataMahasiswaController = async (req, res) => {
-    const { nim, email, angkatan, password, alamat, kodeKab, noHP } =
+    const { nim, email, password, alamat, kodeKab, noHP } =
         req.body;
     const foto = req.file;
 
     // check null input
     if (
         !nim ||
-        !email.trim() ||
-        !angkatan ||
-        !password.trim() ||
-        !alamat.trim() ||
-        !kodeKab.trim() ||
+        !email ||
+        !password ||
+        !alamat ||
+        !kodeKab ||
         !foto ||
         !noHP
     ) {
