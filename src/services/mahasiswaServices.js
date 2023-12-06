@@ -48,7 +48,7 @@ const getDataRegisterMahasiswa = async (data) => {
                 },
                 fk_pemilik_akun_mhs: {
                     select: {
-                        username: true,
+                        // username: true,
                         password: true,
                     },
                 },
@@ -62,7 +62,7 @@ const getDataRegisterMahasiswa = async (data) => {
             statusAktif: result.statusAktif,
             jalurMasuk: result.jalurMasuk,
             namaWali: result.fk_kodeWali.nama,
-            username: result.fk_pemilik_akun_mhs.username,
+            // username: result.fk_pemilik_akun_mhs.username,
             password: result.fk_pemilik_akun_mhs.password,
         };
     } catch (err) {
@@ -73,17 +73,17 @@ const getDataRegisterMahasiswa = async (data) => {
 // TODO : filename foto belum dikirim diresponse
 const updateDataMahasiswa = async (data) => {
     try {
-        if (data.oldUsername !== data.username) {
-            const checkUsername = await prisma.tb_akun_mhs.findUnique({
-                where: {
-                    username: data.username,
-                },
-            });
+        // if (data.oldUsername !== data.username) {
+        //     const checkUsername = await prisma.tb_akun_mhs.findUnique({
+        //         where: {
+        //             username: data.username,
+        //         },
+        //     });
 
-            if (checkUsername) {
-                throw new Error("Username sudah digunakan");
-            }
-        }
+        //     if (checkUsername) {
+        //         throw new Error("Username sudah digunakan");
+        //     }
+        // }
 
         const kodeProv = data.kodeKab.substring(0, 2);
         const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -100,7 +100,7 @@ const updateDataMahasiswa = async (data) => {
                     pemilik: data.nim,
                 },
                 data: {
-                    username: data.username,
+                    // username: data.username,
                     password: hashedPassword,
                 },
             }),
@@ -125,7 +125,7 @@ const updateDataMahasiswa = async (data) => {
 
         return {
             foto: fileName,
-            username: data.username,
+            // username: data.username,
         };
     } catch (err) {
         throw err;
