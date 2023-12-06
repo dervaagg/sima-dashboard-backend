@@ -361,18 +361,21 @@ async function getAkunMahasiswa(data) {
             take: data.qty,
             skip: (data.page - 1) * data.qty,
             where: {
-                OR: [
-                    {
-                        nama: {
-                            contains: data.keyword,
+                OR:
+                    data.keyword && [
+                        {
+                            nama: {
+                                contains: data.keyword,
+                                mode: 'insensitive'
+                            },
                         },
-                    },
-                    {
-                        nim: {
-                            contains: data.keyword,
+                        {
+                            nim: {
+                                contains: data.keyword,
+                                mode: 'insensitive'
+                            },
                         },
-                    },
-                ],
+                    ],
             },
         });
 
