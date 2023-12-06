@@ -67,7 +67,8 @@ const {
     cetakDaftarMhsDepartemenController,
 } = require("../controllers/departemenController");
 
-const { getKotaController } = require("../controllers/locationController");
+const { getKotaController, getProvinsiController } = require("../controllers/locationController");
+// const getProvinsiController = require("../controllers/locationController");
 
 const verifyToken = require("../middlewares/verifyToken");
 const getProfileDosenController = require("../controllers/profileDosenController");
@@ -77,6 +78,7 @@ const router = express.Router();
 // Login
 router.post("/login", loginController);
 router.get("/kota", getKotaController);
+router.get("/provinsi", getProvinsiController);
 
 router.use(verifyToken);
 

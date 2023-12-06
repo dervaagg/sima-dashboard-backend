@@ -8,6 +8,7 @@ const getKota = async (keyword) => {
             take: 10,
             where: {
                 namaKab: {
+                    mode: "insensitive",
                     contains: keyword,
                 },
             },
@@ -19,4 +20,22 @@ const getKota = async (keyword) => {
     }
 };
 
-module.exports = { getKota };
+const getProvinsi = async (keyword) => {
+    console.log(keyword);
+    try {
+        const provinsi = await prisma.tb_provinsi.findMany({
+            take: 10,
+            where: {
+                namaProv: {
+                    contains: keyword,
+                },
+            },
+        });
+        console.log(provinsi);
+        return provinsi;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+module.exports = getKota, getProvinsi;
