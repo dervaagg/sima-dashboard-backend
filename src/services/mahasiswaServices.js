@@ -668,9 +668,9 @@ const getProfileMahasiswa = async (data) => {
       jalurMasuk: result.jalurMasuk,
       email: result.email,
       noHP: result.noHP,
-      // alamat: result.alamat,
-      // namaKab: result.fk_kodeKab.namaKab,
-      // namaProv: result.fk_kodeProv.namaProv,
+      alamat: result.alamat,
+      namaKab: result.fk_kodeKab.namaKab,
+      namaProv: result.fk_kodeProv.namaProv,
       ipk: result.fk_nim_khs.length > 0 ? result.fk_nim_khs[0].ipk : '-',
       jumlahSksKumulatif:
         result.fk_nim_khs.length > 0
