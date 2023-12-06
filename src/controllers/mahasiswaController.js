@@ -38,6 +38,16 @@ const updateDataMahasiswaController = async (req, res) => {
   const foto = req.file;
 
   console.log(req.body);
+  console.log(req.file, 'ini foto');
+  console.log({
+    nim: !nim,
+    email: !email,
+    pass: !password,
+    alamat: !alamat,
+    kab: !kodeKab,
+    foto: !foto,
+    hp: !noHP,
+  });
 
   // check null input
   if (!nim || !email || !password || !alamat || !kodeKab || !foto || !noHP) {
@@ -125,22 +135,13 @@ const updateDataMahasiswaController = async (req, res) => {
 
 // Edit profile anytime
 const updateProfileMahasiswaController = async (req, res) => {
-  const { nim, email, password, alamat, kodeKab, noHP } =
-    req.body;
+  const { nim, email, password, alamat, kodeKab, noHP } = req.body;
   const foto = req.file;
 
   // check null input
-  if (
-    !nim ||
-    !email ||
-    !password ||
-    !alamat ||
-    !kodeKab ||
-    !foto ||
-    !noHP
-  ) {
+  if (!nim || !email || !password || !alamat || !kodeKab || !foto || !noHP) {
     return res.status(400).json({
-      message: "Data tidak boleh kosong",
+      message: 'Data tidak boleh kosong',
     });
   }
 
@@ -150,7 +151,7 @@ const updateProfileMahasiswaController = async (req, res) => {
       if (err) throw err;
     });
     return res.status(403).json({
-      message: "NIM berbeda dari data login. Entry tidak dapat dilakukan",
+      message: 'NIM berbeda dari data login. Entry tidak dapat dilakukan',
     });
   }
 
@@ -169,7 +170,7 @@ const updateProfileMahasiswaController = async (req, res) => {
   //check email
   if (!regexEmail.test(email)) {
     return res.status(400).json({
-      message: "Email harus menggunakan email Undip",
+      message: 'Email harus menggunakan email Undip',
     });
   }
 
@@ -180,22 +181,22 @@ const updateProfileMahasiswaController = async (req, res) => {
   if (!regexNoHP.test(noHP)) {
     if (noHP.length < 10 || noHP.length > 13) {
       return res.status(400).json({
-        message: "Nomor HP tidak valid, minimal 9 digit dan maksimal 13 digit",
+        message: 'Nomor HP tidak valid, minimal 9 digit dan maksimal 13 digit',
       });
     }
     return res.status(400).json({
-      message: "Nomor HP tidak valid. Gunakan format (62)",
+      message: 'Nomor HP tidak valid. Gunakan format (62)',
     });
   }
 
   // Check format foto
   if (
-    path.extname(foto.originalname) !== ".png" &&
-    path.extname(foto.originalname) !== ".jpg" &&
-    path.extname(foto.originalname) !== ".jpeg"
+    path.extname(foto.originalname) !== '.png' &&
+    path.extname(foto.originalname) !== '.jpg' &&
+    path.extname(foto.originalname) !== '.jpeg'
   ) {
     return res.status(400).json({
-      message: "Format foto harus png,jpg,jpeg",
+      message: 'Format foto harus png,jpg,jpeg',
     });
   }
 
@@ -212,7 +213,7 @@ const updateProfileMahasiswaController = async (req, res) => {
 
     const result = await updateDataMahasiswa(data);
     return res.status(200).json({
-      message: "Data berhasil diubah",
+      message: 'Data berhasil diubah',
       data: result,
     });
   } catch (err) {
