@@ -251,12 +251,12 @@ const validasiDataIrsController = async (req, res) => {
     const { nim, semester, status, jumlahSks, fileName } = req.body;
     const nip = req.id;
 
-    // check null input
-    if (!nim || !semester || !status || !jumlahSks || !fileName) {
-        return res.status(400).json({
-            message: "Data tidak boleh kosong",
-        });
-    }
+    // // check null input
+    // if (!nim || !semester || !status || !jumlahSks || !fileName) {
+    //     return res.status(400).json({
+    //         message: "Data tidak boleh kosong",
+    //     });
+    // }
 
     // Check status
     const statusIRS = ["Aktif", "Cuti"];
