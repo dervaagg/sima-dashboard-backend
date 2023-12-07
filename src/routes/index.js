@@ -128,6 +128,7 @@ router.post(
     uploadFotoProfil,
     updateDataMahasiswaController
 );
+router.post("mahasiswa/update-profile", updateProfileMahasiswaController);
 
 // Dashboard
 router.get("/mahasiswa/dashboard", getDashboardMahasiswaController);

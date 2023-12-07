@@ -3,6 +3,13 @@ const jwt = require("jsonwebtoken");
 const verifyToken = (req, res, next) => {
     const token = req.headers["x-access-token"];
     if (token) {
+        // app
+        //     .use(express.static(STATIC_PATH))
+        //     .use(
+        //         exjwt({ secret: SECRET }).unless({
+        //             path: [/\/public\/documents\/irs/]
+        //         })
+        //     )
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
                 if (err.name === "TokenExpiredError") {
@@ -30,8 +37,8 @@ const verifyToken = (req, res, next) => {
                         // console.log(role);
                         let roleExists = false;
                         role.forEach((item) => {
-                            // console.log(item);
-                            // console.log(req.originalUrl);
+                            console.log(item);
+                            console.log(req.originalUrl);
                             // If url consists of the role, (/dosen/search), continue
                             if (req.originalUrl.includes(item.toLowerCase())) {
                                 roleExists = true;

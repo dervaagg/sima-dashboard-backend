@@ -34,7 +34,7 @@ const getDataRegisterMahasiswaController = async (req, res) => {
 };
 
 const updateDataMahasiswaController = async (req, res) => {
-  const { nim, email, password, alamat, kodeKab, noHP } = req.body;
+  const { nim, email, username, password, alamat, kodeKab, noHP } = req.body;
   const foto = req.file;
 
   console.log(req.body);
@@ -42,6 +42,7 @@ const updateDataMahasiswaController = async (req, res) => {
   console.log({
     nim: !nim,
     email: !email,
+    username: !username,
     pass: !password,
     alamat: !alamat,
     kab: !kodeKab,
@@ -50,7 +51,7 @@ const updateDataMahasiswaController = async (req, res) => {
   });
 
   // check null input
-  if (!nim || !email || !password || !alamat || !kodeKab || !foto || !noHP) {
+  if (!nim || !email || !username || !password || !alamat || !kodeKab || !foto || !noHP) {
     return res.status(400).json({
       message: 'Data tidak boleh kosong',
     });
@@ -67,14 +68,14 @@ const updateDataMahasiswaController = async (req, res) => {
   }
 
   // regex username hanya boleh huruf kecil, angka, dan underscore
-  // const regexUsername = /^[a-z0-9_]+$/;
-  // //check username (check duplicate sudah ada di service)
-  // if (!regexUsername.test(username)) {
-  //     return res.status(400).json({
-  //         message:
-  //             "Username hanya boleh terdiri dari huruf kecil, angka, dan underscore",
-  //     });
-  // }
+  const regexUsername = /^[a-z0-9_]+$/;
+  //check username (check duplicate sudah ada di service)
+  if (!regexUsername.test(username)) {
+    return res.status(400).json({
+      message:
+        "Username hanya boleh terdiri dari huruf kecil, angka, dan underscore",
+    });
+  }
 
   // regex email harus include students.undip.ac.id atau lecturers.undip.ac.id
   const regexEmail = /students.undip.ac.id$/;
@@ -86,7 +87,6 @@ const updateDataMahasiswaController = async (req, res) => {
   }
 
   // TODO-VALIDATE: check password
-
   // Check nomor HP (format nomor HP Indonesia)
   const regexNoHP = /^(\+62|62|)8[1-9]{1}[0-9]{8,12}$/;
   if (!regexNoHP.test(noHP)) {
@@ -115,6 +115,7 @@ const updateDataMahasiswaController = async (req, res) => {
     const data = {
       nim,
       email,
+      username,
       password,
       alamat,
       kodeKab,
@@ -133,13 +134,13 @@ const updateDataMahasiswaController = async (req, res) => {
   }
 };
 
-// Edit profile anytime
+// Edit profile anytime by drv
 const updateProfileMahasiswaController = async (req, res) => {
-  const { nim, email, password, alamat, kodeKab, noHP } = req.body;
+  const { nim, email, username, password, alamat, kodeKab, noHP } = req.body;
   const foto = req.file;
 
   // check null input
-  if (!nim || !email || !password || !alamat || !kodeKab || !foto || !noHP) {
+  if (!nim || !email || !username || !password || !alamat || !kodeKab || !foto || !noHP) {
     return res.status(400).json({
       message: 'Data tidak boleh kosong',
     });
@@ -155,15 +156,15 @@ const updateProfileMahasiswaController = async (req, res) => {
     });
   }
 
-  // // regex username hanya boleh huruf kecil, angka, dan underscore
-  // const regexUsername = /^[a-z0-9_]+$/;
-  // //check username (check duplicate sudah ada di service)
-  // if (!regexUsername.test(username)) {
-  //     return res.status(400).json({
-  //         message:
-  //             "Username hanya boleh terdiri dari huruf kecil, angka, dan underscore",
-  //     });
-  // }
+  // regex username hanya boleh huruf kecil, angka, dan underscore
+  const regexUsername = /^[a-z0-9_]+$/;
+  //check username (check duplicate sudah ada di service)
+  if (!regexUsername.test(username)) {
+    return res.status(400).json({
+      message:
+        "Username hanya boleh terdiri dari huruf kecil, angka, dan underscore",
+    });
+  }
 
   // regex email harus include students.undip.ac.id atau lecturers.undip.ac.id
   const regexEmail = /students.undip.ac.id$/;
