@@ -90,6 +90,7 @@ const getDataAkademikMhs = async (data) => {
         }
 
         const currentSmt = countSemester(dataMhs.angkatan);
+
         // ============== IRS ==============
         let irs = await prisma.tb_irs.findMany({
             where: {

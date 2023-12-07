@@ -1,23 +1,16 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-    const token = req.headers["x-access-token"];
+    const token = req.headers['x-access-token'];
     if (token) {
-        // app
-        //     .use(express.static(STATIC_PATH))
-        //     .use(
-        //         exjwt({ secret: SECRET }).unless({
-        //             path: [/\/public\/documents\/irs/]
-        //         })
-        //     )
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
-                if (err.name === "TokenExpiredError") {
+                if (err.name === 'TokenExpiredError') {
                     return res.status(401).json({
-                        message: "Token expired",
+                        message: 'Token expired',
                     });
                 }
-                return res.status(401).json({ message: "Token is not valid" });
+                return res.status(401).json({ message: 'Token is not valid' });
             } else {
                 const { id, role } = decoded;
                 console.log(decoded);
@@ -26,8 +19,8 @@ const verifyToken = (req, res, next) => {
 
                 // if path is register
                 if (
-                    req.path === "/dosen/register" ||
-                    req.path === "/dosen/update-data"
+                    req.path === '/dosen/register' ||
+                    req.path === '/dosen/update-data'
                 ) {
                     next();
                 } else {
@@ -42,14 +35,14 @@ const verifyToken = (req, res, next) => {
                             // If url consists of the role, (/dosen/search), continue
                             if (req.originalUrl.includes(item.toLowerCase())) {
                                 roleExists = true;
-                                res.headers
+                                res.headers;
                                 next();
                             }
                         });
 
                         if (!roleExists) {
                             return res.status(403).json({
-                                message: "You are not authorized to access this resource",
+                                message: 'You are not authorized to access this resource',
                             });
                         }
                         // One role, check url immediately
@@ -58,14 +51,14 @@ const verifyToken = (req, res, next) => {
                         // User don't have the valid role to access the route
                     } else {
                         return res.status(403).json({
-                            message: "You are not authorized to access this resource",
+                            message: 'You are not authorized to access this resource',
                         });
                     }
                 }
             }
         });
     } else {
-        res.status(401).json({ message: "Token is not provided" });
+        res.status(401).json({ message: 'Token is not provided' });
     }
 };
 
