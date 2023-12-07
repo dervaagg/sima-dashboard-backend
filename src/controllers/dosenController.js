@@ -252,7 +252,7 @@ const validasiDataIrsController = async (req, res) => {
     const nip = req.id;
 
     // check null input
-    if (!nim || !semester || !status.trim() || !jumlahSks || !fileName.trim()) {
+    if (!nim || !semester || !status || !jumlahSks || !fileName) {
         return res.status(400).json({
             message: "Data tidak boleh kosong",
         });
