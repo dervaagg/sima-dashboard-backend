@@ -212,7 +212,7 @@ const getStatusValidasiController = async (req, res) => {
     // }
 
     try {
-        const data = { nip, page, qty, keyword, sortBy, order };
+        const data = { nip };
         let result = null;
         switch (path) {
             case "/dosen/status-validasi/irs":
@@ -251,12 +251,12 @@ const validasiDataIrsController = async (req, res) => {
     const { nim, semester, status, jumlahSks, fileName } = req.body;
     const nip = req.id;
 
-    // // check null input
-    // if (!nim || !semester || !status || !jumlahSks || !fileName) {
-    //     return res.status(400).json({
-    //         message: "Data tidak boleh kosong",
-    //     });
-    // }
+    // check null input
+    if (!nim || !semester || !status || !jumlahSks || !fileName) {
+        return res.status(400).json({
+            message: "Data tidak boleh kosong",
+        });
+    }
 
     // Check status
     const statusIRS = ["Aktif", "Cuti"];
